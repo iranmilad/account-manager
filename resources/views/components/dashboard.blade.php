@@ -176,7 +176,12 @@
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-5">
-                                    <a href="/subscription" class="menu-link px-5">خرید اشتراک</a>
+                                    <a href="/messages" class="menu-link px-5">پیام ها</a>
+                                </div>
+                                <!--end::Menu item-->
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-5">
+                                    <a href="/subscriptions" class="menu-link px-5">خرید اشتراک</a>
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu separator-->

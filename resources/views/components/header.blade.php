@@ -24,7 +24,7 @@
 				            <!--begin::Menu wrapper-->
 				            <div class="app-header-menu app-header-mobile-drawer align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="app-header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_app_header_menu_toggle" data-kt-swapper="true" data-kt-swapper-mode="{default: 'append', lg: 'prepend'}" data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}">
 				                <!--begin::Menu-->
-                    
+													<a href="/" class="d-flex align-items-center menu-link">دابشورد</a>
 				                <!--end::Menu-->
 				            </div>
 				            <!--end::Menu wrapper-->
@@ -143,9 +143,14 @@
 				                            <a href="/account" class="menu-link px-5">تنظیمات حساب</a>
 				                        </div>
 				                        <!--end::Menu item-->
+																<!--begin::Menu item-->
+				                        <div class="menu-item px-5">
+				                            <a href="/messages" class="menu-link px-5">پیام ها</a>
+				                        </div>
+				                        <!--end::Menu item-->
 				                        <!--begin::Menu item-->
 				                        <div class="menu-item px-5">
-				                            <a href="/subscription" class="menu-link px-5">خرید اشتراک</a>
+				                            <a href="/subscriptions" class="menu-link px-5">خرید اشتراک</a>
 				                        </div>
 				                        <!--end::Menu item-->
 				                        <!--begin::Menu separator-->
