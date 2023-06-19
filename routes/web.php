@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', function () {
+    return 'Hello, Successful';
+});
+
+Route::post('/test', function () {
+    return 'Hello, Successful';
+});
+
+
 Route::get('/', function () {
     return view('dashboard');
 });
@@ -46,3 +55,22 @@ Route::get("/technicalreporting",function () {
     return view('technicalreporting');
 });
 
+Route::get("/topics",function () {
+    return view('topics');
+});
+
+Route::get("/products",function () {
+    return view('products');
+});
+
+Route::get("/productscategory",function () {
+    return view('productsCategory');
+});
+
+Route::get("/messages",function () {
+    return view('messages');
+});
+
+Route::get("/invoicesmanager",function () {
+    return view('invoicesManager');
+});

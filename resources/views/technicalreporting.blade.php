@@ -1,4 +1,7 @@
 <x-main title="گزارشگیری فنی">
+  @section('css')
+  <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
+  @endsection
   <!-- START:CARD -->
   <div class="card mb-5 mb-xl-10">
     <div class="card-header border-0">
@@ -105,6 +108,7 @@
 
 
   @section('js')
+  <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
   <script>
     $("#technicalreporting_table_1").DataTable({
       language: {

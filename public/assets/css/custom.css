@@ -1,3 +1,8 @@
+/* 
+  Author: Farhad Bagheri
+  Github: https://github.com/cfarhad
+*/
+
 .fill-cyan {
   fill: #06b6d4;
 }
@@ -45,4 +50,16 @@
     width: 70px;
     height: 70px;
   }
+}
+
+.select2-results__option--selected{
+  padding-right: 30px !important;
+}
+
+.select2-selection__choice__display{
+  margin-right: 15px !important;
+}
+
+.dow no-highlight{
+  margin: 0 5px !important;
 }

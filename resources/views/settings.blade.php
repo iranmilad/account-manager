@@ -79,7 +79,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-search-hide="true" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
               <option></option>
               <option value="1">قیمت 1</option>
               <option value="2">قیمت 2</option>
