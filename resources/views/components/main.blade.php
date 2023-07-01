@@ -106,13 +106,14 @@
               <!--begin::Toolbar container-->
               <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack" data-select2-id="select2-data-kt_app_toolbar_container">
                 <!--begin::Page title-->
-                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                  <!--begin::Title-->
-                  <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">{{$title}}</h1>
-                  <!--end::Title-->
-                  <!--begin::Breadcrumb-->
-                  <x-breadcrumb />
-                  <!--end::Breadcrumb-->
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-50px me-3">
+                    <img src="{{$icon}}" height="50" width="50" class="" alt="">
+                  </div>
+                  <div class="d-flex justify-content-start flex-column">
+                    <h2 class="page-heading d-flex text-dark fw-bold fs-4 flex-column justify-content-center my-0">{{$title}}</h2>
+                    <x-breadcrumb />
+                  </div>
                 </div>
                 <!--end::Page title-->
               </div>
@@ -179,6 +180,7 @@
   <script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
   <script src="{{asset('assets/js/widgets.bundle.js')}}"></script>
   <script src="{{asset('assets/js/custom/widgets.js')}}"></script>
+  <script src="/assets/js/axios.min.js"></script>
   <!-- CUSTOMJS -->
   <script src="{{asset('assets/js/custom.js')}}"></script>
   @yield('js')

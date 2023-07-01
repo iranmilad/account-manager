@@ -1,8 +1,8 @@
-<x-main title="دسته بندی محصولات">
+<x-main title="دسته بندی محصولات" icon="./assets/media/icons/blocks.png">
   <div class="card mb-5 mb-xl-10">
     <div class="card-header border-0">
       <div class="card-title m-0">
-        <h3 class="fw-bold m-0">تنظیمات فاکتور</h3>
+        <h3 class="fw-bold m-0">محصولات</h3>
       </div>
     </div>
     <form>
@@ -28,7 +28,6 @@
         <!--end::group-->
       </div>
       <div class="card-footer border-0 d-flex justify-content-end py-6 px-9">
-        <button type="reset" class="btn btn-light btn-active-light-primary me-2">لغو</button>
         <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">ذخیره</button>
       </div>
     </form>

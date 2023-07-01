@@ -1,4 +1,4 @@
-<x-main title="بروزرسانی ها">
+<x-main title="بروزرسانی ها" icon="./assets/media/icons/updates.png">
   <div class="card mb-5 mb-xl-10">
     <div class="card-header border-0">
       <div class="card-title m-0">

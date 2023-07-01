@@ -1,4 +1,4 @@
-<x-main title="گزارش گیری اشکالات">
+<x-main title="گزارش گیری اشکالات" icon="./assets/media/icons/findoption.png">
   <!-- START:CARD -->
   <div class="card mb-5 mb-xl-10">
     <div class="card-header border-0">

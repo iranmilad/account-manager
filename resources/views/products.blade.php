@@ -1,4 +1,4 @@
-<x-main title="بارگزاری محصولات">
+<x-main title="بارگزاری محصولات" icon="./assets/media/icons/uploadproduct.png">
   @section('css')
   <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
   @endsection
@@ -17,10 +17,28 @@
         <!--begin::Col-->
         <div class="col-lg-8">
           <!--begin::Col-->
-          <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید">
+          <select class="form-select form-select-solid" data-control="select2" id="products_select" data-close-on-select="false" data-placeholder="انتخاب کنید">
             <option></option>
             <option value="1">پوشاک</option>
             <option value="2">کفش</option>
+          </select>
+          <!--end::Col-->
+        </div>
+        <!--end::Col-->
+      </div>
+      <!--end::group-->
+      <!--begin:: Group-->
+      <div class="row mb-6">
+        <!--begin::Tags-->
+        <label class="col-lg-4 col-form-label required fw-semibold fs-6">گروه هدف</label>
+        <!--end::Tags-->
+        <!--begin::Col-->
+        <div class="col-lg-8">
+          <!--begin::Col-->
+          <select class="form-select form-select-solid" data-control="select2" id="products_select_2" data-close-on-select="false" data-placeholder="انتخاب کنید">
+            <option></option>
+            <option value="1">آیتم 1</option>
+            <option value="2">آیتم 2</option>
           </select>
           <!--end::Col-->
         </div>
@@ -33,13 +51,11 @@
             <!-- START:TABLE -->
             <table id="products" class="table table-striped table-row-bordered gy-5 gs-7">
               <thead>
-                <tr>
-                  <th class="text-start">name</th>
-                  <th class="text-start">position</th>
-                  <th class="text-start">salary</th>
-                  <th class="text-start">start_date</th>
-                  <th class="text-start">office</th>
-                  <th class="text-start">extn</th>
+                <tr class="fs-7 fw-bold text-gray-400 border-bottom-0">
+                  <th class="cursor-pointer p-0 pb-3 min-w-175px text-start">نام کالا</th>
+                  <th class="cursor-pointer p-0 pb-3 min-w-175px text-start">موجودی</th>
+                  <th class="cursor-pointer p-0 pb-3 min-w-175px text-start">قیمت</th>
+                  <th class="p-0 pb-3 min-w-100px text-end">عملیات</th>
                 </tr>
               </thead>
             </table>
@@ -51,6 +67,8 @@
   </div>
   @section('js')
   <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
-  <script>Products()</script>
+  <script>
+    Products()
+  </script>
   @endsection
 </x-main>

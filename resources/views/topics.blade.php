@@ -1,4 +1,4 @@
-<x-main title="سرفصل ها">
+<x-main title="سرفصل ها" icon="./assets/media/icons/task.png">
   <!-- START: CARD -->
   <div class="card mb-5 mb-xl-10">
     <form>
@@ -14,7 +14,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false">
               <option value="1">تست</option>
             </select>
             <!--end::Col-->
@@ -65,7 +65,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false">
               <option value="1">تست</option>
             </select>
             <!--end::Col-->
@@ -127,7 +127,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false">
               <option value="1">تست</option>
             </select> <!--end::Col-->
           </div>
@@ -137,8 +137,7 @@
       </div>
       <!--START:CARD FOOTER  -->
       <div class="card-footer border-0 d-flex justify-content-end py-6 px-9">
-        <button type="reset" class="btn btn-light btn-active-light-primary me-2">لغو</button>
-        <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">ذخیره تغییرات</button>
+        <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">ذخیره</button>
       </div>
       <!-- END:CARD FOOTER -->
     </form>

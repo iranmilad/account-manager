@@ -1,4 +1,4 @@
-<x-main title="گزارشگیری فنی">
+<x-main title="گزارشگیری فنی" icon="./assets/media/icons/warning-sign.png">
   @section('css')
   <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
   @endsection

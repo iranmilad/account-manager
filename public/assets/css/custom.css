@@ -63,3 +63,16 @@
 .dow no-highlight{
   margin: 0 5px !important;
 }
+
+.dataTables_empty{
+  text-align: center;
+}
+
+.select2-selection__clear{
+  position: absolute !important;
+  right: 20px !important;
+}
+
+.select2-selection__rendered{
+  padding-right: 30px !important;
+}

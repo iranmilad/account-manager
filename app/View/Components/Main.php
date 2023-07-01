@@ -12,10 +12,12 @@ class Main extends Component
      * Create a new component instance.
      */
     public $title;
-    public function __construct($title)
+    public $icon;
+    public function __construct($title,$icon)
     {
         //
         $this->title = $title;
+        $this->icon = $icon;
     }
 
     /**

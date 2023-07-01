@@ -18,10 +18,10 @@
         <h5 class="text-center lh-base">بارگزاری محصولات</h5>
       </div>
     </a>
-    <a class="col-6 col-lg-3 col-md-4 col-xl-2 card bg-transparent" href="reportproducts">
+    <a class="col-6 col-lg-3 col-md-4 col-xl-2 card bg-transparent" href="/issuereporting">
       <img src="./assets/media/icons/findoption.png" class="card-img-top card-icons" />
       <div class="card-body d-flex flex-column flex-center">
-        <h5 class="text-center lh-base">گزارش گیری محصولات</h5>
+        <h5 class="text-center lh-base">گزارش گیری اشکالات</h5>
       </div>
     </a>
     <a class="col-6 col-lg-3 col-md-4 col-xl-2 card bg-transparent" href="productscategory">

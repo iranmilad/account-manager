@@ -1,4 +1,5 @@
-<x-main title="تنظیمات" >
+<x-main title="تنظیمات" icon="./assets/media/icons/gear.png">
+
 
   <!-- begin:Card -->
   <div class="card mb-5 mb-xl-10">
@@ -7,7 +8,7 @@
         <h3 class="fw-bold m-0">تنظیمات فاکتور</h3>
       </div>
     </div>
-    <form class="form">
+    <form class="form" >
       <div class="card-body border-top p-9">
         <!--begin:: Group-->
         <div class="row mb-6">
@@ -17,7 +18,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false">
               <option></option>
               <option value="1">عدم ثبت</option>
               <option value="2">ثبت تنها اقلام دارای کد هلو</option>
@@ -35,7 +36,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false" >
               <option></option>
               <option value="1">پرداخت نقد</option>
               <option value="2">پرداخت نسیه</option>
@@ -53,7 +54,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false">
               <option></option>
               <option value="1">قیمت 1</option>
               <option value="2">قیمت 2</option>
@@ -79,7 +80,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-search-hide="true" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-search-hide="true" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false" >
               <option></option>
               <option value="1">قیمت 1</option>
               <option value="2">قیمت 2</option>
@@ -105,7 +106,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false" >
               <option></option>
               <option value="1">قیمت 1</option>
               <option value="2">قیمت 2</option>
@@ -131,7 +132,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false">
               <option></option>
               <option value="1">موجودی کل</option>
               <option value="2">موجودی با کسر خورده فروشی و پیش فاکتور</option>
@@ -150,7 +151,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false">
               <option></option>
               <option value="1">عدم ثبت</option>
               <option value="2">ثبت فاکتور</option>
@@ -170,7 +171,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false">
               <option></option>
               <option value="1">عدم ثبت</option>
               <option value="2">ثبت فاکتور</option>
@@ -184,7 +185,6 @@
         <!--end::group-->
       </div>
       <div class="card-footer border-0 d-flex justify-content-end py-6 px-9">
-        <button type="reset" class="btn btn-light btn-active-light-primary me-2">لغو</button>
         <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">ذخیره</button>
       </div>
     </form>
@@ -221,7 +221,7 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <!--begin::Col-->
-            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="true" multiple="multiple">
+            <select class="form-select form-select-solid" data-control="select2" data-close-on-select="false" data-placeholder="انتخاب کنید" data-allow-clear="false">
               <option></option>
             </select>
             <!--end::Col-->
@@ -231,7 +231,6 @@
         <!--end::group-->
       </div>
       <div class="card-footer border-0 d-flex justify-content-end py-6 px-9">
-        <button type="reset" class="btn btn-light btn-active-light-primary me-2">لغو</button>
         <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">ذخیره</button>
       </div>
     </form>

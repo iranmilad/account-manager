@@ -1,4 +1,4 @@
-<x-main title="پیام ها">
+<x-main title="پیام ها" icon="/assets/media/icons/messages.png">
   <ul class="nav nav-tabs nav-pills  border-0 mb-5 fs-6">
     <li class="nav-item">
       <a class="nav-link btn btn-sm btn-active-primary active" data-bs-toggle="tab" href="#all_messages">همه</a>
