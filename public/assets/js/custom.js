@@ -22,10 +22,26 @@ if (document.documentElement) {
 }
 
 /**
- * Handle Submit function for invoicersManger page
- * @param {Event} e
+ * define all blockui
  */
-function submitFuc(e) {
+let products_container = document.getElementById("products_container");
+let productsBlockUI = new KTBlockUI(products_container, {
+    overlayClass: "rounded ",
+});
+var ProcutsPicker = new KTBlockUI(document.getElementById("products_select"), {
+    overlayClass: "rounded ",
+});
+var InvoicesPicker = new KTBlockUI(document.getElementById("kt_datepicker_2"), {
+    overlayClass: "rounded ",
+});
+
+/**
+ * Send Rows of invoices manager to server single
+ * @param {Event} e
+ * @sendJson {id: 123 , rowId: 1}
+ * @returnJson {id: 123 , rowId: 1 , name: "فرهاد باقری", price: "24000", status: 0, date: "1400-01-01"}
+ */
+function InvoicesSingle(e) {
     e.preventDefault();
     e.stopPropagation();
     let parent = document.getElementById("invoicesTableContainer");
@@ -37,13 +53,17 @@ function submitFuc(e) {
     const id = trparent.querySelectorAll("td")[0].innerText;
     const rowId = e.target.getAttribute("data-row-id");
     blockUI.block();
-    $.post("https://jsonplaceholder.typicode.com/posts", {
+    $.post("/invoices", {
+        rowId: rowId,
         id,
     })
         .done(function (data) {
             blockUI.release();
             blockUI.destroy();
-            tableInstance.row(rowId).data(data.data).draw();
+            let each = JSON.parse(data.data);
+            let rowId = each.rowId;
+            delete each.rowId;
+            tableInstance.row(rowId).data(each).draw();
         })
         .fail(function () {
             blockUI.release();
@@ -69,20 +89,14 @@ function submitFuc(e) {
 }
 
 /**
- * Handle Submit function for Products page
+ * Send Rows of products to server single
+ * @sendJson {productGp: 1 , targetGp: 2 , id: 123, rowId: 1}
+ * @returnJson {data: {id: 123 , rowId: 1 , name: "کفش",amount: 20, price: "24000", status: 0}}
  */
-
-/**
- * @page Products
- */
-function submitProductsFunc(e) {
+function ProductsSingle(e) {
     e.preventDefault();
     e.stopPropagation();
-    let parent = document.getElementById("products_container");
     let productstableInstance = $("#invoices_table1").DataTable();
-    let productsBlockUI = new KTBlockUI(parent, {
-        overlayClass: "rounded ",
-    });
     if ($("#products_select_2").val() !== "") {
         let productGp = $("#products_select").val();
         let targetGp = $("#products_select_2").val();
@@ -90,14 +104,18 @@ function submitProductsFunc(e) {
         const trparent = e.target.closest("tr");
         const id = trparent.querySelectorAll("td")[0].innerText;
         productsBlockUI.block();
-        $.post("https://jsonplaceholder.typicode.com/posts", {
+        $.post("/products", {
             productGp,
             targetGp,
             id,
+            rowId,
         })
             .done(function (data) {
+                let each = JSON.parse(data.data);
+                let rowIdx = each.rowId;
+                delete each.rowId;
                 productsBlockUI.release();
-                productstableInstance.row(rowId).data(data.data).draw();
+                productstableInstance.row(JSON.parse(rowIdx)).data(each).draw();
             })
             .fail(function () {
                 productsBlockUI.release();
@@ -133,6 +151,142 @@ function submitProductsFunc(e) {
     }
 }
 
+/**
+ * Send Rows of invoices manager to server batch
+ * @sendJson {ids: [{id: 123 , rowId: 1} , {id: 456 , rowId: 2}]}
+ * @returnJson {data: [{id: 123 , rowId: 1 , name: "فرهاد باقری", price: "24000", status: 0, date: "1400-01-01"} }
+ */
+function InvoicesBatch(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    let parent = document.getElementById("invoicesTableContainer");
+    let blockUI = new KTBlockUI(parent, {
+        overlayClass: "rounded ",
+    });
+    let tableInstance = $("#invoices_table1").DataTable();
+    let checkboxes = document.querySelectorAll(
+        '#invoices_table1 tbody [type="checkbox"]'
+    );
+    let ids = [];
+    checkboxes.forEach((c, idx) => {
+        if (c.checked) {
+            let id = c.parentNode.parentNode.nextSibling.textContent;
+            let rowId = c.getAttribute("data-row");
+            ids.push({ id, rowId });
+        }
+    });
+    blockUI.block();
+    $.post("/invoices/batch", { ids: JSON.stringify(ids) })
+        .done(function (data) {
+            let arr = JSON.parse(data.data);
+            arr.map((item) => {
+                let rowId = item.rowId;
+                delete item.rowId;
+                tableInstance.row(rowId).data(item.data).draw();
+            });
+            blockUI.release();
+            blockUI.destroy();
+        })
+        .fail(function () {
+            blockUI.release();
+            toastr.options = {
+                closeButton: true,
+                debug: false,
+                newestOnTop: false,
+                progressBar: false,
+                positionClass: "toastr-bottom-right",
+                preventDuplicates: true,
+                onclick: null,
+                showDuration: "300",
+                hideDuration: "1000",
+                timeOut: "5000",
+                extendedTimeOut: "1000",
+                showEasing: "swing",
+                hideEasing: "linear",
+                showMethod: "fadeIn",
+                hideMethod: "fadeOut",
+            };
+            toastr.error("مشکل در ارسال درخواست", "پیام سیستم");
+        });
+}
+
+/**
+ * Send Rows of products to server batch
+ * @sendJson {productGp: 1 , targetGp: 2 , ids: [{id: 123 , rowId: 1}]}
+ * @returnJson {data: [{id: 123 , rowId: 1 , name: "کفش",amount: 20, price: "24000", status: 0}]}
+ */
+function ProductsBatch(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    let tableInstance = $("#products").DataTable();
+    let checkboxes = document.querySelectorAll(
+        '#products tbody [type="checkbox"]'
+    );
+    if ($("#products_select_2").val() !== "") {
+        let productGp = $("#products_select").val();
+        let targetGp = $("#products_select_2").val();
+        let ids = [];
+        checkboxes.forEach((c, idx) => {
+            if (c.checked) {
+                let id = c.getAttribute("data-real-id");
+                let rowId = c.getAttribute("data-row");
+                ids.push({ id, rowId });
+            }
+        });
+        productsBlockUI.block();
+        $.post("/products/batch", {
+            productGp,
+            targetGp,
+            ids: JSON.stringify(ids),
+        })
+            .done(function (data) {
+                productsBlockUI.release();
+                productsBlockUI.destroy();
+                let arr = JSON.parse(data.data);
+                arr.map((item) => {
+                    let rowId = item.rowId;
+                    delete item.rowId;
+                    tableInstance.row(rowId).data(item.data).draw();
+                });
+            })
+            .fail(function () {
+                productsBlockUI.release();
+                toastr.options = {
+                    closeButton: true,
+                    debug: false,
+                    newestOnTop: false,
+                    progressBar: false,
+                    positionClass: "toastr-bottom-right",
+                    preventDuplicates: true,
+                    onclick: null,
+                    showDuration: "300",
+                    hideDuration: "1000",
+                    timeOut: "5000",
+                    extendedTimeOut: "1000",
+                    showEasing: "swing",
+                    hideEasing: "linear",
+                    showMethod: "fadeIn",
+                    hideMethod: "fadeOut",
+                };
+                toastr.error("مشکل در ارسال درخواست", "پیام سیستم");
+            });
+    } else {
+        Swal.fire({
+            text: "گروه هدف را انتخاب کنید",
+            icon: "error",
+            buttonsStyling: false,
+            confirmButtonText: "بستن",
+            customClass: {
+                confirmButton: "btn btn-danger",
+            },
+        });
+    }
+}
+
+/**
+ * @page Products
+ * @products_select_Json {id: 123 , name: "کفش",amount: 20, price: "24000", status: 0}
+ */
 const Products = () => {
     let products = document.getElementById("products_select");
     var productsBlockUi = new KTBlockUI(products);
@@ -144,12 +298,23 @@ const Products = () => {
             emptyTable: "داده ای وجود ندارد",
         },
         columns: [
+            { data: "checkbox" },
             { data: "name" },
             { data: "amount" },
             { data: "price" },
             { data: null },
         ],
         columnDefs: [
+            {
+                targets: 0,
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    return `
+                        <div class="form-check form-check-sm form-check-custom form-check-solid">
+                            <input class="form-check-input" type="checkbox" value="${data}" data-row="${meta.row}" data-real-id="${row.id}" />
+                        </div>`;
+                },
+            },
             {
                 targets: -1,
                 data: null,
@@ -159,7 +324,7 @@ const Products = () => {
                     if (data.status === 1) {
                         return `موجود است`;
                     } else
-                        return `<button class='btn btn-sm btn-primary' onclick="submitProductsFunc(event)" data-row-id='${meta.row}'>ثبت</button>`;
+                        return `<button class='btn btn-sm btn-primary' onclick="ProductsSingle(event)" data-row-id='${meta.row}'>ثبت</button>`;
                 },
             }, // Disable ordering on column 4 (actions)
         ],
@@ -170,25 +335,26 @@ const Products = () => {
 
     table = dt.$;
     dt.on("draw", function () {
+        resetTable();
         handleAddRow();
+        initToggleToolbar();
     });
+
+    const resetTable = () => {
+        const checkboxes = document.querySelectorAll(
+            '#products [type="checkbox"]'
+        );
+        checkboxes.forEach((c) => {
+            c.checked = false;
+        });
+    };
 
     $("#products_select").on("select2:select", function (e) {
         var data = e.params.data;
-        $.get("/test" , {group: data.id}).done((data) => {
-            FlatPickerBlockUi.release();
-            dt.rows.add(data.data).draw();
+        $.get(`/products/${data.id}`).done((data) => {
+            ProcutsPicker.release();
+            dt.rows.add(JSON.parse(data.data)).draw();
         });
-        dt.rows
-            .add([
-                {
-                    name: "کفش",
-                    amount: "2123",
-                    price: "99",
-                    status: 0,
-                },
-            ])
-            .draw();
     });
 
     let handleAddRow = () => {
@@ -206,95 +372,63 @@ const Products = () => {
             });
         });
     };
+    const toggleToolbars = () => {
+        // Define variable
+        const toolbarSelected = document.querySelector(
+            '[data-kt-customer-table-toolbar="selected"]'
+        );
+
+        // Select refreshed checkbox DOM elements
+        const allCheckboxes = document.querySelectorAll(
+            '#products tbody [type="checkbox"]'
+        );
+
+        // Detect checkboxes state & count
+        let checkedState = false;
+        let count = 0;
+
+        // Count checked boxes
+        allCheckboxes.forEach((c) => {
+            if (c.checked) {
+                checkedState = true;
+            }
+        });
+        let deleteSelected = toolbarSelected.querySelector("#delete_selected");
+
+        // Toggle toolbars
+        if (checkedState) {
+            deleteSelected.style.visibility = "visible";
+            // add an onclick method named ProductsBatch
+            deleteSelected.setAttribute("onclick", "ProductsBatch(event)");
+        } else {
+            deleteSelected.style.visibility = "hidden";
+            // remove onclick method named ProductsBatch
+            deleteSelected.removeAttribute("onclick");
+        }
+    };
+    const initToggleToolbar = () => {
+        const checkboxes = document.querySelectorAll(
+            '#products [type="checkbox"]'
+        );
+
+        // Toggle delete selected toolbar
+        checkboxes.forEach((c) => {
+            // Checkbox on click event
+            c.addEventListener("click", function () {
+                setTimeout(function () {
+                    toggleToolbars();
+                }, 50);
+            });
+        });
+    };
 };
 
 /**
  * @page Messages
+ * @returnJson {id: 2,name: "سارا محمدی", profile: null,seen: null,sent: "1401/11/05",body: "سلام، چه خبر؟"}
  */
 const Messages = () => {
-    $.get("/test").done(function (data) {
-        let arr = [
-            {
-                id: 1,
-                name: "محمدرضا احمدی",
-                profile: null,
-                seen: "1402/04/21",
-                sent: "1402/01/12",
-                body: "سلام، چطوری؟",
-            },
-            {
-                id: 2,
-                name: "سارا محمدی",
-                profile: null,
-                seen: null,
-                sent: "1401/11/05",
-                body: "سلام، چه خبر؟",
-            },
-            {
-                id: 3,
-                name: "علی رضایی",
-                profile: null,
-                seen: null,
-                sent: "1400/07/28",
-                body: "سلام، حالتون چطوره؟",
-            },
-            {
-                id: 4,
-                name: "نیلوفر حسینی",
-                profile: null,
-                seen: "1403/01/17",
-                sent: "1403/01/15",
-                body: "سلام، چه طوری داری؟",
-            },
-            {
-                id: 5,
-                name: "حسین محمدیان",
-                profile: null,
-                seen: null,
-                sent: "1401/05/10",
-                body: "سلام، چه خبر؟",
-            },
-            {
-                id: 6,
-                name: "فریبا حسینی",
-                profile: null,
-                seen: "1402/09/12",
-                sent: "1402/09/10",
-                body: "سلام، چه طوری داری؟",
-            },
-            {
-                id: 7,
-                name: "آرش نجفی",
-                profile: null,
-                seen: null,
-                sent: "1400/10/23",
-                body: "سلام، حالتون چطوره؟",
-            },
-            {
-                id: 8,
-                name: "رضا محمدی",
-                profile: null,
-                seen: "1403/06/02",
-                sent: "1403/05/30",
-                body: "سلام، چطوری؟",
-            },
-            {
-                id: 9,
-                name: "شیرین اکبری",
-                profile: null,
-                seen: null,
-                sent: "1401/09/15",
-                body: "سلام، چه خبر؟",
-            },
-            {
-                id: 10,
-                name: "صدیقه رضایی",
-                profile: null,
-                seen: null,
-                sent: "1400/02/11",
-                body: "سلام، حالتون چطوره؟",
-            },
-        ];
+    $.get("/messages").done(function (data) {
         function generateItem({ id, name, profile, seen, sent, body }) {
             return `
             <div class="mt-5" data-message-parent=${seen ? "" : id}>
@@ -333,7 +467,7 @@ const Messages = () => {
             </div>
           </div>`;
         }
-        arr.map((item) => {
+        data.data.map((item) => {
             $("#all_messages").append(generateItem(item));
             item.seen
                 ? $("#seen_messages").append(generateItem(item))
@@ -438,190 +572,36 @@ const notification = () => {
     };
 };
 
-$.get("/test").done(function () {
-    let arr = [
-        {
-            id: 1,
-            name: "محمدرضا احمدی",
-            profile: null,
-            seen: "1402/04/21",
-            sent: "1402/01/12",
-            body: "سلام، چطوری؟",
-        },
-        {
-            id: 2,
-            name: "سارا محمدی",
-            profile: null,
-            seen: null,
-            sent: "1401/11/05",
-            body: "سلام، چه خبر؟",
-        },
-        {
-            id: 3,
-            name: "علی رضایی",
-            profile: null,
-            seen: null,
-            sent: "1400/07/28",
-            body: "سلام، حالتون چطوره؟",
-        },
-        {
-            id: 4,
-            name: "نیلوفر حسینی",
-            profile: null,
-            seen: "1403/01/17",
-            sent: "1403/01/15",
-            body: "سلام، چه طوری داری؟",
-        },
-        {
-            id: 5,
-            name: "حسین محمدیان",
-            profile: null,
-            seen: null,
-            sent: "1401/05/10",
-            body: "سلام، چه خبر؟",
-        },
-        {
-            id: 6,
-            name: "فریبا حسینی",
-            profile: null,
-            seen: "1402/09/12",
-            sent: "1402/09/10",
-            body: "سلام، چه طوری داری؟",
-        },
-        {
-            id: 7,
-            name: "آرش نجفی",
-            profile: null,
-            seen: null,
-            sent: "1400/10/23",
-            body: "سلام، حالتون چطوره؟",
-        },
-        {
-            id: 8,
-            name: "رضا محمدی",
-            profile: null,
-            seen: "1403/06/02",
-            sent: "1403/05/30",
-            body: "سلام، چطوری؟",
-        },
-        {
-            id: 9,
-            name: "شیرین اکبری",
-            profile: null,
-            seen: null,
-            sent: "1401/09/15",
-            body: "سلام، چه خبر؟",
-        },
-        {
-            id: 10,
-            name: "صدیقه رضایی",
-            profile: null,
-            seen: null,
-            sent: "1400/02/11",
-            body: "سلام، حالتون چطوره؟",
-        },
-    ];
+/**
+ * send first request to server for get notifications
+ * @returnJson {data: [{id: 2,name: "سارا محمدی", profile: null,seen: null,sent: "1401/11/05",body: "سلام، چه خبر؟"}]}
+ */
+$.get("/test").done(function (data) {
+    let realData = JSON.parse(data.data);
     let count = 0;
-    arr.map((item) => (item.seen === null ? count++ : null));
+    realData.map((item) => (item.seen === null ? count++ : null));
     notification().set(count);
 });
 
+/**
+ * Send request every 30 seconds to server for get notifications
+ * @returnJson {data: [{id: 2,name: "سارا محمدی", profile: null,seen: null,sent: "1401/11/05",body: "سلام، چه خبر؟"}]}
+ */
 setInterval(() => {
-    $.get("/test").done(function () {
-        let arr = [
-            {
-                id: 1,
-                name: "محمدرضا احمدی",
-                profile: null,
-                seen: "1402/04/21",
-                sent: "1402/01/12",
-                body: "سلام، چطوری؟",
-            },
-            {
-                id: 2,
-                name: "سارا محمدی",
-                profile: null,
-                seen: null,
-                sent: "1401/11/05",
-                body: "سلام، چه خبر؟",
-            },
-            {
-                id: 3,
-                name: "علی رضایی",
-                profile: null,
-                seen: null,
-                sent: "1400/07/28",
-                body: "سلام، حالتون چطوره؟",
-            },
-            {
-                id: 4,
-                name: "نیلوفر حسینی",
-                profile: null,
-                seen: "1403/01/17",
-                sent: "1403/01/15",
-                body: "سلام، چه طوری داری؟",
-            },
-            {
-                id: 5,
-                name: "حسین محمدیان",
-                profile: null,
-                seen: null,
-                sent: "1401/05/10",
-                body: "سلام، چه خبر؟",
-            },
-            {
-                id: 6,
-                name: "فریبا حسینی",
-                profile: null,
-                seen: "1402/09/12",
-                sent: "1402/09/10",
-                body: "سلام، چه طوری داری؟",
-            },
-            {
-                id: 7,
-                name: "آرش نجفی",
-                profile: null,
-                seen: null,
-                sent: "1400/10/23",
-                body: "سلام، حالتون چطوره؟",
-            },
-            {
-                id: 8,
-                name: "رضا محمدی",
-                profile: null,
-                seen: "1403/06/02",
-                sent: "1403/05/30",
-                body: "سلام، چطوری؟",
-            },
-            {
-                id: 9,
-                name: "شیرین اکبری",
-                profile: null,
-                seen: null,
-                sent: "1401/09/15",
-                body: "سلام، چه خبر؟",
-            },
-            {
-                id: 10,
-                name: "صدیقه رضایی",
-                profile: null,
-                seen: null,
-                sent: "1400/02/11",
-                body: "سلام، حالتون چطوره؟",
-            },
-        ];
+    $.get("/test").done(function (data) {
+        let realData = JSON.parse(data.data);
         let count = 0;
-        arr.map((item) => (item.seen === null ? count++ : null));
+        realData.map((item) => (item.seen === null ? count++ : null));
         notification().set(count);
     });
 }, 30000);
 
 /**
  * @page Invoices Manager
+ * @returnJson_after_select_date {data: [{id: 123 , name: "فرهاد باقری", price: "24000", status: 0, date: "1400-01-01"}]}
  */
-const InvoicesManager = () => {
+const InvoicesManager = (minDate, maxDate) => {
     const element = document.querySelector("#kt_datepicker_2");
-    var FlatPickerBlockUi = new KTBlockUI(element);
     let table;
     let dt;
     flatpickr = $(element).flatpickr({
@@ -630,32 +610,19 @@ const InvoicesManager = () => {
         altFormat: "Y-m-d",
         dateFormat: "Y-m-d",
         locale: "fa",
+        maxDate,
+        minDate,
         onChange: function (selectedDates, dateStr, instance) {
-            if (FlatPickerBlockUi.isBlocked()) {
-                FlatPickerBlockUi.release();
+            if (InvoicesPicker.isBlocked()) {
+                InvoicesPicker.release();
             } else {
-                FlatPickerBlockUi.block();
+                InvoicesPicker.block();
             }
-            $.get("/test" , {date: dateStr}).done((data) => {
-                FlatPickerBlockUi.release();
-                dt.rows.add(data.data).draw();
+            $.get(`/invoices/${dateStr}`).done((data) => {
+                InvoicesPicker.release();
+                let realData = JSON.parse(data.data);
+                dt.rows.add(realData).draw();
             });
-            // $data = [
-            //     {
-            //         id: 123,
-            //         name: "فرهاد باقری",
-            //         price: "24000",
-            //         status: 0,
-            //         date: new Date().toLocaleDateString(),
-            //     },
-            //     {
-            //         id: 456,
-            //         name: "فرهاد باقری",
-            //         price: "99000",
-            //         status: 0,
-            //         date: new Date().toLocaleDateString(),
-            //     },
-            // ];
         },
     });
 
@@ -673,6 +640,7 @@ const InvoicesManager = () => {
         order: [[1, "desc"]],
         stateSave: true,
         columns: [
+            { data: "checkbox" },
             { data: "id" },
             { data: "name" },
             { data: "price" },
@@ -681,19 +649,18 @@ const InvoicesManager = () => {
             { data: null },
         ],
         columnDefs: [
-            // {
-            //     targets: 0,
-            //     visible: false,
-            //     orderable: false,
-            //     render: function (data, type, row, meta) {
-            //         return `
-            //             <div class="form-check form-check-sm form-check-custom form-check-solid">
-            //                 <input class="form-check-input" type="checkbox" value="${data}" data-row="${meta.row}" />
-            //             </div>`;
-            //     },
-            // },
             {
-                targets: 3,
+                targets: 0,
+                orderable: false,
+                render: function (data, type, row, meta) {
+                    return `
+                        <div class="form-check form-check-sm form-check-custom form-check-solid">
+                            <input class="form-check-input" type="checkbox" value="${data}" data-row="${meta.row}" data-real-id="${row.id}" />
+                        </div>`;
+                },
+            },
+            {
+                targets: 4,
                 render: function (data) {
                     if (data === 1) {
                         return `<div class='badge badge-success fw-bold' data-status="1">ثبت شده</div>`;
@@ -709,9 +676,9 @@ const InvoicesManager = () => {
                 className: "text-end",
                 render: function (data, type, row, meta) {
                     if (data.status === 1) {
-                        return `<button class='btn btn-sm btn-info' onclick="submitFuc(event)" data-row-id='${meta.row}'>ثبت مجدد</button>`;
+                        return `<button class='btn btn-sm btn-info' onclick="InvoicesSingle(event)" data-row-id='${meta.row}'>ثبت مجدد</button>`;
                     } else
-                        return `<button class='btn btn-sm btn-primary' onclick="submitFuc(event)" data-row-id='${meta.row}'>ثبت</button>`;
+                        return `<button class='btn btn-sm btn-primary' onclick="InvoicesSingle(event)" data-row-id='${meta.row}'>ثبت</button>`;
                 },
             }, // Disable ordering on column 4 (actions)
         ],
@@ -719,76 +686,74 @@ const InvoicesManager = () => {
 
     table = dt.$;
 
-    // const toggleToolbars = () => {
-    //     // Define variable
-    //     const toolbarSelected = document.querySelector(
-    //         '[data-kt-customer-table-toolbar="selected"]'
-    //     );
-    //     const selectedCount = document.querySelector(
-    //         '[data-kt-customer-table-select="selected_count"]'
-    //     );
+    dt.on("draw", function () {
+        resetTable();
+        toggleToolbars();
+        initToggleToolbar();
+    });
 
-    //     // Select refreshed checkbox DOM elements
-    //     const allCheckboxes = document.querySelectorAll(
-    //         '#invoices_table1 tbody [type="checkbox"]'
-    //     );
+    const toggleToolbars = () => {
+        // Define variable
+        const toolbarSelected = document.querySelector(
+            '[data-kt-customer-table-toolbar="selected"]'
+        );
+        const selectedCount = document.querySelector(
+            '[data-kt-customer-table-select="selected_count"]'
+        );
 
-    //     // Detect checkboxes state & count
-    //     let checkedState = false;
-    //     let count = 0;
+        // Select refreshed checkbox DOM elements
+        const allCheckboxes = document.querySelectorAll(
+            '#invoices_table1 tbody [type="checkbox"]'
+        );
 
-    //     // Count checked boxes
-    //     allCheckboxes.forEach((c) => {
-    //         if (c.checked) {
-    //             checkedState = true;
-    //             count++;
-    //         }
-    //     });
+        // Detect checkboxes state & count
+        let checkedState = false;
+        let count = 0;
 
-    //     // Toggle toolbars
-    //     if (checkedState) {
-    //         selectedCount.innerHTML = count;
-    //         toolbarSelected.classList.remove("d-none");
-    //     } else {
-    //         toolbarSelected.classList.add("d-none");
-    //     }
+        // Count checked boxes
+        allCheckboxes.forEach((c) => {
+            if (c.checked) {
+                checkedState = true;
+            }
+        });
 
-    //     // Select elements
-    //     const deleteSelected = document.getElementById("delete_selected");
-    //     // Deleted selected rows
-    //     deleteSelected.addEventListener("click", function () {
-    //         console.log("DONE");
-    //         // let ids = [];
-    //         // checkboxes.forEach((c) => {
-    //         //     if (c.checked) {
-    //         //         // datatable.row($(c.closest('tbody tr'))).remove().draw();
-    //         //         // let id = c.parentNode.parentNode.nextSibling.textContent;
-    //         //         // ids.push(id);
-    //         //         if (c.getAttribute("data-row")) {
-    //         //             let id =
-    //         //                 c.parentNode.parentNode.nextSibling.textContent;
-    //         //             ids.push(id);
-    //         //         }
-    //         //     }
-    //         // });
-    //     });
-    // };
+        // Toggle toolbars
+        if (checkedState) {
+            // add a button to toolbarSelected without remove other buttons
+            toolbarSelected.innerHTML = `
+                <button class="btn btn-info btn-sm" onclick="InvoicesBatch(event)">ثبت انتخاب شده</button>
+            `;
+        } else {
+            toolbarSelected.innerHTML = "";
+        }
 
-    // const initToggleToolbar = () => {
-    //     const checkboxes = document.querySelectorAll(
-    //         '#invoices_table1 [type="checkbox"]'
-    //     );
+    };
 
-    //     // Toggle delete selected toolbar
-    //     checkboxes.forEach((c) => {
-    //         // Checkbox on click event
-    //         c.addEventListener("click", function () {
-    //             setTimeout(function () {
-    //                 toggleToolbars();
-    //             }, 50);
-    //         });
-    //     });
-    // };
+    // reset all checkboxes
+    const resetTable = () => {
+        const checkboxes = document.querySelectorAll(
+            '#invoices_table1 [type="checkbox"]'
+        );
+        checkboxes.forEach((c) => {
+            c.checked = false;
+        });
+    };
+
+    const initToggleToolbar = () => {
+        const checkboxes = document.querySelectorAll(
+            '#invoices_table1 [type="checkbox"]'
+        );
+
+        // Toggle delete selected toolbar
+        checkboxes.forEach((c) => {
+            // Checkbox on click event
+            c.addEventListener("click", function () {
+                setTimeout(function () {
+                    toggleToolbars();
+                }, 50);
+            });
+        });
+    };
 };
 
 /**
