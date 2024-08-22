@@ -9,6 +9,8 @@
     <link href="{{asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/plugins/global/plugins.bundle.rtl.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/css/style.bundle.rtl.css')}}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/assets/css/flatpickr.min.css">
+    <link rel="stylesheet" href="/assets/css/flatpickr-custom.css">
     <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet" type="text/css" />
     <style>
         .app-header {

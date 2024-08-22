@@ -246,7 +246,7 @@ function ProductsBatch(e) {
                 arr.map((item) => {
                     let rowId = item.rowId;
                     delete item.rowId;
-                    tableInstance.row(rowId).data(item.data).draw();
+                    tableInstance.row(rowId).data(item).draw();
                 });
             })
             .fail(function () {
@@ -314,19 +314,7 @@ const Products = () => {
                             <input class="form-check-input" type="checkbox" value="${data}" data-row="${meta.row}" data-real-id="${row.id}" />
                         </div>`;
                 },
-            },
-            {
-                targets: -1,
-                data: null,
-                orderable: false,
-                className: "text-end",
-                render: function (data, type, row, meta) {
-                    if (data.status === 1) {
-                        return `موجود است`;
-                    } else
-                        return `<button class='btn btn-sm btn-primary' onclick="ProductsSingle(event)" data-row-id='${meta.row}'>ثبت</button>`;
-                },
-            }, // Disable ordering on column 4 (actions)
+            },// Disable ordering on column 4 (actions)
         ],
         pageLength: 50,
         order: [[1, "desc"]],
@@ -353,6 +341,7 @@ const Products = () => {
         var data = e.params.data;
         $.get(`/products/${data.id}`).done((data) => {
             ProcutsPicker.release();
+            dt.clear();
             dt.rows.add(JSON.parse(data.data)).draw();
         });
     });
@@ -726,7 +715,6 @@ const InvoicesManager = (minDate, maxDate) => {
         } else {
             toolbarSelected.innerHTML = "";
         }
-
     };
 
     // reset all checkboxes
@@ -802,3 +790,42 @@ function Alarm({
     if (type === "warning") toastr.warning(msg, title);
     if (type === "error") toastr.error(msg, title);
 }
+
+// setTimeout(() => {
+//     document.getElementById("xyz").innerHTML = `
+//     <div type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="hello">
+//     Tooltip on top
+// </div>`;
+// $('[data-bs-toggle="tooltip"]').tooltip();
+// }, 2000);
+
+function generatePassword() {
+    var length = 8,
+        charset =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+}
+
+// create password .create-password-input-group
+$(".create-password-input-group-generate").on("click", function () {
+    var password = generatePassword();
+    $(this).parent().find("input").val(password);
+});
+
+$(".create-password-input-group-copy").on("click", function () {
+    let copyText = $(this).parent().find("input");
+    if (copyText.val() == "") {
+        return;
+    }
+    copyText.select();
+    document.execCommand("copy");
+    // remove btn-dark and add btn-success for 2 seconds. after 2 seconds revert back to btn-dark
+    $(this).removeClass("btn-dark").addClass("btn-success");
+    setTimeout(() => {
+        $(this).removeClass("btn-success").addClass("btn-dark");
+    }, 2000);
+});

@@ -4,12 +4,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{$title}}</title>
+  <title>@yield('title')</title>
   @yield('css')
   <link href="{{asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
   <link href="{{asset('assets/plugins/global/plugins.bundle.rtl.css')}}" rel="stylesheet" type="text/css" />
   <link href="{{asset('assets/css/style.bundle.rtl.css')}}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/assets/plugins/custom/datatables/datatables.bundle.rtl.css">
   <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/assets/css/flatpickr.min.css">
+  <link rel="stylesheet" href="/assets/css/flatpickr-custom.css">
 </head>
 
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
@@ -26,8 +29,8 @@
           <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
             <!--begin::Logo image-->
             <a href="/">
-              <img alt="Logo" src="assets/media/logos/default-dark.svg" class="h-25px app-sidebar-logo-default">
-              <img alt="Logo" src="assets/media/logos/default-small.svg" class="h-20px app-sidebar-logo-minimize">
+              <img alt="Logo" src="/assets/media/logos/default-dark.svg" class="h-25px app-sidebar-logo-default">
+              <img alt="Logo" src="/assets/media/logos/default-small.svg" class="h-20px app-sidebar-logo-minimize">
             </a>
             <div id="kt_app_sidebar_toggle" class="app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary body-bg h-30px w-30px position-absolute top-50 start-100 translate-middle rotate" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="app-sidebar-minimize">
               <i class="ki-duotone ki-double-left fs-2 rotate-180">
@@ -108,14 +111,15 @@
                 <!--begin::Page title-->
                 <div class="d-flex align-items-center">
                   <div class="symbol symbol-50px me-3">
-                    <img src="{{$icon}}" height="50" width="50" class="" alt="">
+                    <img src="@yield('icon')" height="50" width="50" class="" alt="">
                   </div>
                   <div class="d-flex justify-content-start flex-column">
-                    <h2 class="page-heading d-flex text-dark fw-bold fs-4 flex-column justify-content-center my-0">{{$title}}</h2>
+                    <h2 class="page-heading d-flex text-dark fw-bold fs-4 flex-column justify-content-center my-0">@yield('title')</h2>
                     <x-breadcrumb />
                   </div>
                 </div>
                 <!--end::Page title-->
+                @yield("toolbar")
               </div>
               <!--end::Toolbar container-->
             </div>
@@ -125,7 +129,7 @@
               <!--begin::Content container-->
               <div id="kt_app_content_container" class="app-container container-xxl">
                 <!-- begin::PAGE -->
-                {{$slot}}
+                @yield("content")
                 <!-- begin::PAGE -->
               </div>
               <!--end::Content container-->
@@ -139,7 +143,7 @@
             <div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3">
               <!--begin::Copyright-->
               <div class="text-dark order-2 order-md-1">
-                <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">ساخته شده با ❤️</a>
+                <a href="#" target="_blank" class="text-gray-800 text-hover-primary">ساخته شده با ❤️</a>
                 <span class="text-muted fw-semibold me-1">
                   <script>
                     document.write(new Date().getFullYear())
@@ -150,7 +154,7 @@
               <!--begin::Menu-->
               <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
                 <li class="menu-item">
-                  <a href="https://keenthemes.com" target="_blank" class="menu-link px-2">درباره ی ما</a>
+                  <a href="#" target="_blank" class="menu-link px-2">درباره ی ما</a>
                 </li>
                 <li class="menu-item">
                   <a href="https://rtl-theme.com" target="_blank" class="menu-link px-2">پشتیبانی</a>
@@ -181,8 +185,37 @@
   <script src="{{asset('assets/js/widgets.bundle.js')}}"></script>
   <script src="{{asset('assets/js/custom/widgets.js')}}"></script>
   <script src="/assets/js/axios.min.js"></script>
+  <script src="/assets/plugins/flatpickr.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      let advanced_search = window['advanced_search'] = $('.advanced_search').select2({
+        placeholder: "جستجو کنید",
+        language: {
+          inputTooShort: function() {
+            return "حداقل باید 3 حرف وارد کنید"
+          },
+          noResults: function() {
+            return "نتیجه ای یافت نشد";
+          },
+          searching: function() {
+            return "در حال جستجو...";
+          }
+        },
+        ajax: {
+          url: function(params) {
+            return window.ajaxUrl + "?type=" + $(this).data('type') + "&q=" + params.term;
+          },
+          dataType: 'json',
+          delay: 250,
+        },
+        minimumInputLength: 3
+      });
+    })
+  </script>
+  @yield('before-js')
   <!-- CUSTOMJS -->
   <script src="{{asset('assets/js/custom.js')}}"></script>
+  <script src="/assets/js/global-table.js"></script>
   @yield('js')
 </body>
 

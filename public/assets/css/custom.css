@@ -73,6 +73,44 @@
   right: 20px !important;
 }
 
-.select2-selection__rendered{
-  padding-right: 30px !important;
+
+.table tbody tr td , .table thead th{
+  padding-right: 0;
+}
+
+.table tbody tr td:last-child{
+  padding-left: 0 !important;
+}
+
+.card-ticket .card-body{
+  min-height: 400px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.message-box{
+  min-height: 50px;
+  background: var(--bs-light);
+  border: 1px solid var(--bs-secondary);
+  border-radius: 0.625rem;
+  padding: 10px 20px;
+  margin-top: 20px;
+}
+
+.message-box.you{
+  background: var(--bs-gray-300);
+}
+
+.message-box-footer{
+  border-top: 1px solid var(--bs-secondary);
+  padding-top: 5px;
+  margin-top: 20px;
+}
+
+.message-box.you .message-box-footer{
+  border-color: var(--bs-gray-400);
+}
+
+.message-files a:hover i{
+  color: var(--bs-primary);
 }
