@@ -590,30 +590,8 @@ setInterval(() => {
  * @returnJson_after_select_date {data: [{id: 123 , name: "فرهاد باقری", price: "24000", status: 0, date: "1400-01-01"}]}
  */
 const InvoicesManager = (minDate, maxDate) => {
-    const element = document.querySelector("#kt_datepicker_2");
     let table;
     let dt;
-    flatpickr = $(element).flatpickr({
-        disableMobile: "true",
-        altInput: true,
-        altFormat: "Y-m-d",
-        dateFormat: "Y-m-d",
-        locale: "fa",
-        maxDate,
-        minDate,
-        onChange: function (selectedDates, dateStr, instance) {
-            if (InvoicesPicker.isBlocked()) {
-                InvoicesPicker.release();
-            } else {
-                InvoicesPicker.block();
-            }
-            $.get(`/invoices/${dateStr}`).done((data) => {
-                InvoicesPicker.release();
-                let realData = JSON.parse(data.data);
-                dt.rows.add(realData).draw();
-            });
-        },
-    });
 
     dt = $("#invoices_table1").DataTable({
         info: false,

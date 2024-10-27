@@ -51,7 +51,7 @@
           <div class="col-lg-4">
             <div class="mb-0">
               <label for="" class="form-label">انتخاب تاریخ</label>
-              <input class="form-control form-control-solid" placeholder="انتخاب کنید" id="kt_datepicker_2" />
+              <input class="form-control form-control-solid" type="text" placeholder="انتخاب کنید" data-jdp id="kt_datepicker_2" />
             </div>
           </div>
           <div class="col-lg-8 mt-4">
@@ -90,12 +90,12 @@
 </div>
 <!-- END: CARD -->
 @endsection
+
 @section('js')
-<script src="/assets/js/flatpicker_fa.js"></script>
-<script src="/assets/js/jdate.min.js"></script>
+<script src="/assets/js/jalalidatepicker.min.js"></script>
 <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
 <script>
-  window.Date = window.JDate;
+    jalaliDatepicker.startWatch();
 </script>
 <script>
   InvoicesManager();

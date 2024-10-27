@@ -30,7 +30,7 @@
                     <label for="received_date" class="form-label">تاریخ دریافت</label>
                 </div>
                 <div class="col-lg-8">
-                    <input type="text" name="received_date" id="date_time" placeholder="تاریخ دریافت را وارد کنید" class="form-control form-control-solid">
+                    <input type="text" name="received_date" data-jdp placeholder="تاریخ دریافت را وارد کنید" class="form-control form-control-solid">
                 </div>
             </div>
             <div class="row mb-5">
@@ -71,16 +71,8 @@
 @endsection
 
 @section('js')
-<script src="/assets/plugins/flatpicker_fa.js"></script>
-<script src="/assets/plugins/jdate.min.js"></script>
+<script src="/assets/js/jalalidatepicker.min.js"></script>
 <script>
-    window.Date = window.JDate;
-    flatpickr = $("#date_time").flatpickr({
-        disableMobile: "true",
-        altInput: true,
-        altFormat: "Y-m-d",
-        dateFormat: "Y-m-d",
-        locale: "fa",
-    });
+    jalaliDatepicker.startWatch();
 </script>
 @endsection

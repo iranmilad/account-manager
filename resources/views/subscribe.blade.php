@@ -68,7 +68,7 @@
                     <label for="buy_start_date" class="form-label">تاریخ شروع خرید</label>
                 </div>
                 <div class="col-lg-8">
-                    <input type="text" name="buy_start_date" id="date_time" placeholder="تاریخ شروع خرید را وارد کنید" class="form-control form-control-solid">
+                    <input type="text" name="buy_start_date" data-jdp placeholder="تاریخ شروع خرید را وارد کنید" class="form-control form-control-solid">
                 </div>
             </div>
 
@@ -175,8 +175,7 @@
 
 
 @section('js')
-<script src="/assets/plugins/flatpicker_fa.js"></script>
-<script src="/assets/plugins/jdate.min.js"></script>
+<script src="/assets/js/jalalidatepicker.min.js"></script>
 <script>
     var input = document.querySelector("#tagify");
 
@@ -189,15 +188,6 @@
             pattern: /^.{1,70}/,
         },
     });
-    window.Date = window.JDate;
-    flatpickr = $("#date_time").flatpickr({
-        disableMobile: "true",
-        altInput: true,
-        altFormat: "H:i Y-m-d",
-        dateFormat: "H:i Y-m-d",
-        locale: "fa",
-        enableTime: true,
-        time_24hr: true,
-    });
+    jalaliDatepicker.startWatch();
 </script>
 @endsection

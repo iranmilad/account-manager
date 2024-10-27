@@ -47,6 +47,32 @@
     </div>
     <!--end::group-->
     <div class="row mb-6">
+      <!--begin::Tags-->
+      <label class="col-lg-4 col-form-label required fw-semibold fs-6">کد محصول مشتری</label>
+      <!--end::Tags-->
+      <!--begin::Col-->
+      <div class="col-lg-8">
+        <!--begin::Col-->
+        <input type="text" name="customer-product-code" placeholder="کد محصول را وارد کنید" class="form-control form-control-solid">
+        <!--end::Col-->
+      </div>
+      <!--end::Col-->
+    </div>
+    <!--end::group-->
+    <div class="row mb-6">
+      <!--begin::Tags-->
+      <label class="col-lg-4 col-form-label required fw-semibold fs-6">انتخاب محصول</label>
+      <!--end::Tags-->
+      <!--begin::Col-->
+      <div class="col-lg-8">
+        <!--begin::Col-->
+        <x-advanced-search type="user" label="" name="user" solid multiple />
+        <!--end::Col-->
+      </div>
+      <!--end::Col-->
+    </div>
+    <!--end::group-->
+    <div class="row mb-6">
       <div class="col-12">
         <div class="d-flex flex-column justify-content-center container-fluid" id="products_container">
           <div class="row">
